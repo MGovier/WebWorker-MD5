@@ -6,34 +6,40 @@ let running = true;
 function increment(attempt) {
   let ret = attempt;
   let lastChar = ret.substr(ret.length - 1).charCodeAt(0);
-  let lastCharIncr = lastChar + 1;
+  let lastCharIncr = lastChar + workerCount;
+  const firstCharIncr = lastCharIncr;
   // Start incrementing preceeding characters, or add one to end.
   let i = 1;
   while (lastCharIncr > 122) {
     if (++i > ret.length) {
-      ret = String.fromCharCode(97).repeat(ret.length) + String.fromCharCode(lastCharIncr - 26);
+      ret = String.fromCharCode(97).repeat(ret.length) +
+        String.fromCharCode(97 + (firstCharIncr - 123));
       return ret;
     }
     lastChar = ret.substr(ret.length - i).charCodeAt(0);
     lastCharIncr = lastChar + 1;
   }
-  ret = ret.substr(0, ret.length - i) + String.fromCharCode(lastCharIncr) +
-    String.fromCharCode(97).repeat(i - 1);
+  ret = ret.substr(0, ret.length - i) + String.fromCharCode(lastCharIncr);
+  if (i > 2) {
+    ret += String.fromCharCode(97).repeat(i - 2);
+  }
+  if (i > 1) {
+    ret += String.fromCharCode(97 + (firstCharIncr - 123));
+  }
   return ret;
 }
 
 function start() {
   console.log(`Worker ${workerId} trying to crack ${hash}`);
   // Start on first character, plus the number of this worker.
-  let attempt = String.fromCharCode(97);
-  for (let i = 0; i < 500000000; ++i) {
+  let attempt = String.fromCharCode(97 + workerId);
+  for (let i = 0; i < 500; ++i) {
     attempt = increment(attempt);
-    if (i % workerCount === workerId) {
-      if (attempt === 'team') {
-        console.log(`${workerId} found ${attempt} correctly`);
-      }
+    console.log(attempt);
+    if (attempt === 'tea') {
+      console.log(`${workerId} found ${attempt} correctly`);
     }
-    if (i === 499999999) {
+    if (i === 499999) {
       console.log(`${workerId} ended on ${attempt}`);
     }
   }
