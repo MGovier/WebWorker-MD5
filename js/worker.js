@@ -2,7 +2,7 @@
  *
  * @author UP663652
  */
-self.importScripts('md5.min.js');
+self.importScripts('spark-md5.min.js');
 
 let workerId = undefined;
 let hash = undefined;
@@ -51,7 +51,7 @@ function start() {
   let tracker = 0;
   while (true) {
     attempt = increment(attempt);
-    if (md5(attempt) === hash) {
+    if (SparkMD5.hash(attempt) === hash) {
       this.postMessage({
         type: 'cracked',
         content: attempt,
