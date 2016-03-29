@@ -1,30 +1,27 @@
-'use strict';
-
 /**
  * Main JS to coordinate WebWorkers and update DOM.
  * See worker.js for individual process function.
  */
 
-var workers = [];
+const workers = [];
 
 /**
  * Stop all running workers.
  */
 function stopWorkers() {
-  workers.forEach(function (worker) {
-    return worker.terminate();
-  });
+  workers.forEach(worker => worker.terminate());
 }
 
 function updateStatus(msgData) {
-  var target = document.querySelector('#worker-' + msgData.id + '-body');
+  const target = document.querySelector(`#worker-${msgData.id}-body`);
   if (msgData.type === 'update') {
-    target.innerHTML = 'Checking ' + Math.round(msgData.content) + ' hashes per second...';
+    target.innerHTML = `Checking ${Math.round(msgData.content)} hashes per second...`;
   } else if (msgData.type === 'cracked') {
     target.innerHTML += '<b>Solved!</b>';
-    var t = document.createElement('div');
+    const t = document.createElement('div');
     t.classList.add('alert', 'alert-success');
-    t.innerHTML = 'Hash matched: <b>' + msgData.content + '</b> ' + ('Time taken: ' + msgData.time + 'ms.');
+    t.innerHTML = `Hash matched: <b>${msgData.content}</b> ` +
+      `Time taken: ${msgData.time}ms.`;
     document.querySelector('#result').appendChild(t);
   }
 }
@@ -49,17 +46,17 @@ function start() {
   stopWorkers();
   document.querySelector('#workers').innerHTML = '';
   document.querySelector('#result').innerHTML = '';
-  var workerCount = parseInt(document.querySelector('#workerCount').value, 10);
-  var hash = document.querySelector('#hash').value;
-  for (var i = 0; i < workerCount; ++i) {
-    var child = new Worker('js/worker.js');
+  const workerCount = parseInt(document.querySelector('#workerCount').value, 10);
+  const hash = document.querySelector('#hash').value;
+  for (let i = 0; i < workerCount; ++i) {
+    const child = new Worker('js/worker.js');
     workers.push(child);
     child.addEventListener('message', messageListener);
 
-    var t = document.querySelector('#worker-window');
-    t.content.querySelector('.panel-heading').textContent = 'Worker ' + i;
-    t.content.querySelector('.panel-body').setAttribute('id', 'worker-' + i + '-body');
-    var clone = document.importNode(t.content, true);
+    const t = document.querySelector('#worker-window');
+    t.content.querySelector('.panel-heading').textContent = `Worker ${i}`;
+    t.content.querySelector('.panel-body').setAttribute('id', `worker-${i}-body`);
+    const clone = document.importNode(t.content, true);
     document.body.querySelector('#workers').appendChild(clone);
 
     child.postMessage({ type: 'setWorkerId', content: i });
@@ -69,8 +66,8 @@ function start() {
   }
 }
 
-var parameters = document.getElementById('parameters');
-parameters.addEventListener('submit', function (evt) {
+const parameters = document.getElementById('parameters');
+parameters.addEventListener('submit', evt => {
   evt.preventDefault();
   start();
 });
