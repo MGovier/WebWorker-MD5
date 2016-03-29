@@ -12,4 +12,4 @@ Calculate MD5 hashes in an attempt to find the string that generated that hash, 
 ## About
 The main functionality is located in `app/src`. This is written using ES6, so babel is used to transpile for browser compatibility. Run `npm run build` to re-generate the files in `app/public/js/`, which are served to the client.
 
-Linting is provided by ESLint using Airbnb's guide. Run `npm run lint` to check JS `src` files.
+Linting with ESLint using Airbnb's guide. Run `npm run lint` to check JS `src` files.
