@@ -1,8 +1,22 @@
+/**
+ *
+ * @author UP663652
+ */
+self.importScripts('md5.min.js');
+
 let workerId = undefined;
 let hash = undefined;
 let workerCount = undefined;
-let running = true;
 
+const REPORT_RATE = 80000;
+
+/**
+ * Increment the string by the number of workers.
+ * As the initial string is tied to the worker ID, this will keep the workers
+ * synchronized.
+ * @param  {String} attempt String to increment.
+ * @return {String}         Result.
+ */
 function increment(attempt) {
   let ret = attempt;
   let lastChar = ret.substr(ret.length - 1).charCodeAt(0);
@@ -30,20 +44,31 @@ function increment(attempt) {
 }
 
 function start() {
-  console.log(`Worker ${workerId} trying to crack ${hash}`);
+  console.log(`Worker ${workerId} trying to guess ${hash}`);
+  const startTime = new Date();
   // Start on first character, plus the number of this worker.
   let attempt = String.fromCharCode(97 + workerId);
-  for (let i = 0; i < 500; ++i) {
+  let tracker = 0;
+  while (true) {
     attempt = increment(attempt);
-    console.log(attempt);
-    if (attempt === 'tea') {
-      console.log(`${workerId} found ${attempt} correctly`);
+    if (md5(attempt) === hash) {
+      this.postMessage({
+        type: 'cracked',
+        content: attempt,
+        id: workerId,
+        time: (new Date() - startTime),
+      });
+      console.log(`${workerId} found ${attempt}`);
     }
-    if (i === 499999) {
-      console.log(`${workerId} ended on ${attempt}`);
+    if (tracker % REPORT_RATE === 0) {
+      this.postMessage({
+        type: 'update',
+        id: workerId,
+        content: tracker / ((new Date() - startTime) / 1000),
+      });
     }
+    tracker++;
   }
-  console.log('worker finished');
 }
 
 this.addEventListener('message', msg => {
@@ -62,10 +87,6 @@ this.addEventListener('message', msg => {
 
     case 'start':
       start();
-      break;
-
-    case 'stop':
-      running = false;
       break;
 
     default:
