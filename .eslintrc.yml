@@ -2,4 +2,7 @@ extends: airbnb
 plugins:
   - react
 rules:
-  no-console: 0 # Console is used to track worker communication. 
+  no-console: 0 # Console is used to track worker communication.
+  no-constant-condition: 0 # While true used in workers.
+globals:
+  SparkMD5: true
