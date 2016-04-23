@@ -10,6 +10,10 @@ Calculate MD5 hashes in an attempt to find the string that generated that hash, 
 * [JS Spark MD5](https://github.com/satazor/js-spark-md5)
 
 ## About
-The main functionality is located in `app/src`. This is written using ES6, so babel is used to transpile for browser compatibility. Run `npm run build` to re-generate the files in `app/public/js/`, which are served to the client.
+To start this up locally:
+* Install [Node.JS](https://nodejs.org/en/) if necessary.
+* Download this repository, and `cd` into the folder from your terminal.
+* Run `npm install` to grab the dependencies.
+* Run `npm start`, and browse to `http://localhost:1337` by default.
 
-Linting with ESLint using Airbnb's guide. Run `npm run lint` to check JS `src` files.
+The main logic is located in `app/src`. This is written using ES6, so babel is used for browser compatibility. Run `npm run build` to re-generate the files in `app/public/js/`, which are the ones served to the client.
