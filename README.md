@@ -1,6 +1,6 @@
 # Parallel Web
 Repository for Distributed and Parallel Programming 2016 at University of Portsmouth.
-[See the demo!](https://mgovier.github.io/WebWorker-MD5/)
+[See the demo!](https://up663652.github.io/WebWorker-MD5/)
 
 ## Purpose
 Calculate MD5 hashes in an attempt to find the string that generated that hash, through brute-force.
