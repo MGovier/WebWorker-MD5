@@ -1,5 +1,5 @@
 # Parallel Web
-Repository for Distributed and Parallel Programming 2016 at University of Portsmouth.
+Repository for Distributed and Parallel Programming 2016 at University of Portsmouth, by up663652.
 [See the demo!](https://up663652.github.io/WebWorker-MD5/)
 
 ## Purpose
